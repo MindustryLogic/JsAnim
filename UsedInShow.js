@@ -1,3 +1,4 @@
 import * as ManimJs from './JsAnim.js';
 
-ManimJs.helloWorldBecauseYes();
+ManimJs.AltWay();
+ManimJs.AnimMain.init("1080x720", 30);
