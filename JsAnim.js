@@ -21,11 +21,14 @@ export function AltWay() {
 export class Main{
     constructor(name) {
         this.id = name;
+        this.fps;
+        this.AppendTarget;
     }
     initDisplay(resolution, fps) {
         let ResolutionWidth = Number(resolution.split("x")[0]);
         let ResolutionHeight = Number(resolution.split("x")[1]);
         let MsPerFrame = Math.round(1000 / fps);
+        this.fps = fps;
         const frame = document.createElement("div");
         frame.id = this.id;
         frame.style.backgroundColor = "black";
@@ -34,10 +37,31 @@ export class Main{
         document.body.appendChild(frame);
     }
     DisplayData() {
-        const frame = document.getElementById(this.id)
+        const frame = document.getElementById("RenderZone");
+        this.AppendTarget = frame;
         const para = document.createElement("p");
-        para.textContent = frame.getAttribute("width");
+        para.textContent = frame.style.getPropertyValue("width") + " x " + frame.style.getPropertyValue("height") + " " + this.fps + " fps";
         document.body.appendChild(para);
+    }
+    CreateObject(Object) {
+        this.object = Object;
+        switch (this.object) {
+            case "rect":
+                
+        }
+    }
+    CreateRectCSS(width, height, bgColor) {
+        const rect = createElement("div");
+        rect.style.width = width + "px";
+        rect.style.height = height + "px";
+        rect.style.position = "relative";
+        rect.style.backgroundColor = bgColor;
+        this.AppendTarget.appendChild(rect);
+    }
+    CreateRectSVG(width, height, startPos) {
+        const svg = document.createElementNS("https://www.w3.org/2000/svg", "svg")
+        const rect = document.createElementNS("https://www.w3.org/2000/svg", "rect")
+        svg.setAttribute("viewBox",)
     }
 }
 
