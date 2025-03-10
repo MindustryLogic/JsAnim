@@ -18,26 +18,26 @@ export function AltWay() {
 //Concept ok initial testing over time for the real deal
 //Sooner or later I will have to write the documentation and tests(probably) and i might put the docs on my github pages and/or use the wiki in github
 export function AnimMain() {
-    this.init = function (resolution, fps) {
-        ResolutionHeight = Number(resolution.split("x")[1]);
-        ResolutionWidth = Number(resolution.split("x")[0]);
-        MsPerFrame = Math.round(1000 / fps);
-        const frame = document.createElement("p");
-        frame.id = "AnimationDisplayArea";
-        frame.textContent = "This exist";
-        document.body.appendChild(frame);//it is not showing up
-        /*document.getElementById("AnimationDisplayArea").forEach((defaults) => {
-            defaults.style.top = "0px";
-            defaults.style.left = "0px";
-            defaults.style.width = ResolutionWidth + "px";
-            defaults.style.height = ResolutionHeight + "px";
-            defaults.style.position = "absolute";
-            defaults.style.backgroundColor = "black";
-            defaults.style.overflow = "hidden";
-            defaults.style.display = "block";
-        })*/
+    const initDisplay = function init(resolution, fps) {
+        alert(resolution);
+        /*let ResolutionWidth = Number(resolution.split("x")[0]);
+        let MsPerFrame = Math.round(1000 / fps);*/
+        const para = document.createElement("p");
+        /*frame.id = "AnimationDisplayArea";
+        frame.style.backgroundColor = "black";
+        frame.style.height = ResolutionHeight + "px";
+        frame.style.width = ResolutionWidth + "px";*/
+        para.textContent = "Bruh";
+        document.body.appendChild(para);//and this isn't
     };//wait how do i make it auto execute init so i don't have to worry about people forgetting to do that
-    this.DisplayMeta = function () {
-        
+    const DisplayData = function DisplayMeta() {
+        const para = document.createElement("p");
+        para.textContent = "Thing";
+        document.body.appendChild(para);
+    }//this is working fine
+    return {
+        initDisplay,
+        DisplayData
     }
 };
+export const Anim = AnimMain();

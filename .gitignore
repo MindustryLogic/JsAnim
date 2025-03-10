@@ -1,3 +1,4 @@
 *.html
 *.js
+UsedInShow.js
 !JsAnim.js

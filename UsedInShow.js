@@ -1,4 +1,5 @@
 import * as ManimJs from './JsAnim.js';
 
 ManimJs.AltWay();
-ManimJs.AnimMain.init("1080x720", 30);
+ManimJs.Anim.DisplayData();
+ManimJs.Anim.initDisplay();
