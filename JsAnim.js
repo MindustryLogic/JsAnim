@@ -17,27 +17,28 @@ export function AltWay() {
 }
 //Concept ok initial testing over time for the real deal
 //Sooner or later I will have to write the documentation and tests(probably) and i might put the docs on my github pages and/or use the wiki in github
-export function AnimMain() {
-    const initDisplay = function init(resolution, fps) {
-        alert(resolution);
-        /*let ResolutionWidth = Number(resolution.split("x")[0]);
-        let MsPerFrame = Math.round(1000 / fps);*/
-        const para = document.createElement("p");
-        /*frame.id = "AnimationDisplayArea";
+
+export class Main{
+    constructor(name) {
+        this.id = name;
+    }
+    initDisplay(resolution, fps) {
+        let ResolutionWidth = Number(resolution.split("x")[0]);
+        let ResolutionHeight = Number(resolution.split("x")[1]);
+        let MsPerFrame = Math.round(1000 / fps);
+        const frame = document.createElement("div");
+        frame.id = this.id;
         frame.style.backgroundColor = "black";
         frame.style.height = ResolutionHeight + "px";
-        frame.style.width = ResolutionWidth + "px";*/
-        para.textContent = "Bruh";
-        document.body.appendChild(para);//and this isn't
-    };//wait how do i make it auto execute init so i don't have to worry about people forgetting to do that
-    const DisplayData = function DisplayMeta() {
-        const para = document.createElement("p");
-        para.textContent = "Thing";
-        document.body.appendChild(para);
-    }//this is working fine
-    return {
-        initDisplay,
-        DisplayData
+        frame.style.width = ResolutionWidth + "px";
+        document.body.appendChild(frame);
     }
-};
-export const Anim = AnimMain();
+    DisplayData() {
+        const frame = document.getElementById(this.id)
+        const para = document.createElement("p");
+        para.textContent = frame.getAttribute("width");
+        document.body.appendChild(para);
+    }
+}
+
+export const Anim = new Main("RenderZone");
