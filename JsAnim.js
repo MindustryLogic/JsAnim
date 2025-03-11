@@ -62,13 +62,7 @@ export class Main{
         para.textContent = frame.style.getPropertyValue("width") + " x " + frame.style.getPropertyValue("height") + " " + this.fps + " fps";
         document.body.appendChild(para);
     }
-    CreateObject(Object) {
-        this.object = Object;
-        switch (this.object) {
-            case "rect":
-                
-        };
-    };
+    //this portion make stuff appear
     CreateRectCSS(width, height, startPos, color, id) {
         const rect = document.createElement("div");
         rect.style.width = width + "px";
@@ -92,6 +86,30 @@ export class Main{
 
         this.SVGTarget.appendChild(rect1);
     };
+    //this portion make stuff move
+    AnimateCSSNative(itemId, mode, type, duration) {
+        this.item = document.getElementById(itemId);
+        if (this.item.id.includes("svg")) {
+            console.error("This element isn't a div please use the function specific for svg");
+            debugger;
+        } else {
+            switch (mode) {
+                
+            }
+        }
+    };
+    AnimateCSSJS(itemId, mode, type, duration) {
+        this.item = document.getElementById(itemId);
+        if (this.item.id.includes("svg")) {
+            console.error("This element isn't a div please use the function specific for svg");
+            debugger;
+        } else {
+            switch (mode) {
+                case "linear":
+                    //i have no idea how this part can work
+            }
+        }
+    }
 }
 
 export const Anim = new Main("RenderZone");
