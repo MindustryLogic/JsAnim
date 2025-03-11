@@ -23,9 +23,10 @@ export class Main{
         this.id = name;
         this.fps;
         this.AppendTarget;
+        this.SVGTarget;
         this.reso;
     }
-    initDisplay(resolution, fps) {
+    initDisplay(resolution=String("1080x720"), fps=Number(30), includeSVG=Boolean(true)) {
         let ResolutionWidth = Number(resolution.split("x")[0]);
         let ResolutionHeight = Number(resolution.split("x")[1]);
         let MsPerFrame = Math.round(1000 / fps);
@@ -37,11 +38,26 @@ export class Main{
         frame.style.height = ResolutionHeight + "px";
         frame.style.width = ResolutionWidth + "px";
         frame.style.borderStyle = "solid";
+        frame.style.display = "block"
         document.body.appendChild(frame);
+        if (includeSVG === Boolean(true)) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("aria-hidden","true");
+            svg.setAttribute("viewbox", "0 0" + " " + this.reso.split("x")[0] + " " + this.reso.split("x")[1]);
+            svg.setAttribute('width', this.reso.split("x")[0]+"px");
+            svg.setAttribute('height', this.reso.split("x")[1]+"px");
+            svg.setAttribute('id', "SVGHere");
+            svg.style.position = "relative";
+            svg.style.display = "block";
+            svg.style.zIndex = -1;
+            frame.appendChild(svg);
+        }//working not working
+
     }
     DisplayData() {
         const frame = document.getElementById("RenderZone");
         this.AppendTarget = frame;
+        this.SVGTarget = document.getElementById("SVGHere")
         const para = document.createElement("p");
         para.textContent = frame.style.getPropertyValue("width") + " x " + frame.style.getPropertyValue("height") + " " + this.fps + " fps";
         document.body.appendChild(para);
@@ -53,33 +69,28 @@ export class Main{
                 
         };
     };
-    CreateRectCSS(width, height, Color) {
+    CreateRectCSS(width, height, startPos, color, id) {
         const rect = document.createElement("div");
         rect.style.width = width + "px";
         rect.style.height = height + "px";
         rect.style.position = "relative";
-        rect.style.backgroundColor = Color;
-        this.AppendTarget.appendChild(rect);
+        rect.style.top = startPos.split("x")[1]+"px";
+        rect.style.left = startPos.split("x")[0]+"px";
+        rect.style.backgroundColor = color;
+        rect.style.id = id
+        this.AppendTarget.insertBefore(rect, this.AppendTarget.children[0]);
     };
     CreateRectSVG(width, height, startPos, color, id) {
-        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         var rect1 = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-            
-        svg.setAttribute("aria-hidden","true");
-        svg.setAttribute("viewbox", "0 0" + " " + this.reso.split("x")[0] + " " + this.reso.split("x")[1]);
-        svg.setAttribute('width', this.reso.split("x")[0]+"px");
-        svg.setAttribute('height', this.reso.split("x")[1]+"px");
-        svg.setAttribute('id', id);
-        svg.style.position = "relative";
             
         rect1.setAttribute("width", width+"px");
         rect1.setAttribute("height", height+"px");
         rect1.setAttribute("x", startPos.split("x")[0]);
         rect1.setAttribute("y", startPos.split("x")[1]);
         rect1.setAttribute("fill", color);
+        rect1.setAttribute("id", id + "svg");
 
-        svg.appendChild(rect1);
-        this.AppendTarget.appendChild(svg);
+        this.SVGTarget.appendChild(rect1);
     };
 }
 
