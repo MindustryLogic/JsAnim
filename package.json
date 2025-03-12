@@ -1,0 +1,22 @@
+{
+  "name": "jsanim",
+  "version": "1.0.0",
+  "description": "Manim but javascript-ish",
+  "main": "JsAnim.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MindustryLogic/JsAnim.git"
+  },
+  "keywords": [
+    "Animation"
+  ],
+  "author": "MindustryLogic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MindustryLogic/JsAnim/issues"
+  },
+  "homepage": "https://github.com/MindustryLogic/JsAnim#readme"
+}

@@ -17,7 +17,8 @@ export function AltWay() {
 }
 //Concept ok initial testing over time for the real deal
 //Sooner or later I will have to write the documentation and tests(probably) and i might put the docs on my github pages and/or use the wiki in github
-
+export let ObjList = new Array;
+export let stylesheet;
 export class Main{
     constructor(name) {
         this.id = name;
@@ -25,6 +26,7 @@ export class Main{
         this.AppendTarget;
         this.SVGTarget;
         this.reso;
+        this.stylesheet;
     }
     initDisplay(resolution=String("1080x720"), fps=Number(30), includeSVG=Boolean(true)) {
         let ResolutionWidth = Number(resolution.split("x")[0]);
@@ -51,8 +53,11 @@ export class Main{
             svg.style.display = "block";
             svg.style.zIndex = -1;
             frame.appendChild(svg);
-        }//working not working
-
+        };
+        stylesheet = document.createElement("style");
+        this.stylesheet = stylesheet;
+        stylesheet.appendChild(document.createTextNode(""));
+        document.head.appendChild(stylesheet);
     }
     DisplayData() {
         const frame = document.getElementById("RenderZone");
@@ -61,9 +66,10 @@ export class Main{
         const para = document.createElement("p");
         para.textContent = frame.style.getPropertyValue("width") + " x " + frame.style.getPropertyValue("height") + " " + this.fps + " fps";
         document.body.appendChild(para);
+        console.log(stylesheet);
     }
-    //this portion make stuff appear
-    CreateRectCSS(width, height, startPos, color, id) {
+    //this portion make stuff exist
+    CreateRectCSS(width=Number, height=Number, startPos=String(0x0), color=String, id=String) {
         const rect = document.createElement("div");
         rect.style.width = width + "px";
         rect.style.height = height + "px";
@@ -71,10 +77,14 @@ export class Main{
         rect.style.top = startPos.split("x")[1]+"px";
         rect.style.left = startPos.split("x")[0]+"px";
         rect.style.backgroundColor = color;
-        rect.style.id = id
+        rect.style.id = id;
+        rect.style.display = "block";
+        rect.style.opacity = 0;
         this.AppendTarget.insertBefore(rect, this.AppendTarget.children[0]);
+        ObjList.push("Rect " + id);
+        console.log(ObjList);
     };
-    CreateRectSVG(width, height, startPos, color, id) {
+    CreateRectSVG(width=Number, height=Number, startPos=String(0x0), color=String, id=String) {
         var rect1 = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
             
         rect1.setAttribute("width", width+"px");
@@ -83,33 +93,47 @@ export class Main{
         rect1.setAttribute("y", startPos.split("x")[1]);
         rect1.setAttribute("fill", color);
         rect1.setAttribute("id", id + "svg");
+        rect1.setAttribute("opacity", 0);
 
         this.SVGTarget.appendChild(rect1);
+        ObjList.push("Rect " + id + " svg");
+        console.log(ObjList);
     };
     //this portion make stuff move
-    AnimateCSSNative(itemId, mode, type, duration) {
+    AnimateCSS(itemId, mode, type, duration) {
         this.item = document.getElementById(itemId);
         if (this.item.id.includes("svg")) {
             console.error("This element isn't a div please use the function specific for svg");
             debugger;
-        } else {
-            switch (mode) {
-                
+        };
+        
+    };
+    static sub = class {
+        constructor() {
+        };
+        Appear(item) {
+            this.item = ObjList[item];
+            if (this.item.includes("svg") === false) {
+                document.getElementById(this.item).style.opacity = 1;
+            } else {
+                document.getElementById(this.item).setAttribute("opacity", 1);
             }
         }
-    };
-    AnimateCSSJS(itemId, mode, type, duration) {
-        this.item = document.getElementById(itemId);
-        if (this.item.id.includes("svg")) {
-            console.error("This element isn't a div please use the function specific for svg");
-            debugger;
-        } else {
-            switch (mode) {
-                case "linear":
-                    //i have no idea how this part can work
+        Animate(item, type, duration, from, to) {
+            this.item = ObjList[item];
+            if (this.item.includes("svg") === false) {
+                let shape = String(this.item).split(" ")[0];
+                switch (shape) {
+                    case ("Rect"):
+                        console.log(stylesheet);
+                        let AddKeyframes = new Array;
+                        AddKeyframes.push("@keyframes");
+                        
+                }
             }
         }
     }
 }
 
-export const Anim = new Main("RenderZone");
+export const Add = new Main("RenderZone");
+export const Animate = new Main.sub();
