@@ -69,7 +69,7 @@ export class Main{
         console.log(stylesheet);
     }
     //this portion make stuff exist
-    CreateRectCSS(width=Number, height=Number, startPos=String(0x0), color=String, id=String) {
+    CreateRectCSS(width=Number, height=Number, startPos=String(0x0), color=String(), id=String()) {
         const rect = document.createElement("div");
         rect.style.width = width + "px";
         rect.style.height = height + "px";
@@ -77,9 +77,9 @@ export class Main{
         rect.style.top = startPos.split("x")[1]+"px";
         rect.style.left = startPos.split("x")[0]+"px";
         rect.style.backgroundColor = color;
-        rect.style.id = id;
+        rect.setAttribute("id", id);
         rect.style.display = "block";
-        rect.style.opacity = 0;
+        rect.style.opacity = 1;
         this.AppendTarget.insertBefore(rect, this.AppendTarget.children[0]);
         ObjList.push("Rect " + id);
         console.log(ObjList);
@@ -114,21 +114,27 @@ export class Main{
         Appear(item) {
             this.item = ObjList[item];
             if (this.item.includes("svg") === false) {
-                document.getElementById(this.item).style.opacity = 1;
+                document.getElementById(this.item.split(" ")[1]).style.opacity = 1;
             } else {
-                document.getElementById(this.item).setAttribute("opacity", 1);
+                document.getElementById(this.item.split(" ")[1]).setAttribute("opacity", 1);
             }
         }
-        Animate(item, type, duration, from, to) {
+        Animate(item, type, duration, to=String("0x0")) {
             this.item = ObjList[item];
+            this.location = document.getElementById(this.item.split(" ")[1]).getBoundingClientRect();
+            console.log(this.location)
             if (this.item.includes("svg") === false) {
                 let shape = String(this.item).split(" ")[0];
                 switch (shape) {
                     case ("Rect"):
                         console.log(stylesheet);
                         let AddKeyframes = new Array;
-                        AddKeyframes.push("@keyframes");
-                        
+                        AddKeyframes.push("@keyframes", this.item + "Anim");
+                        AddKeyframes.push("{", "from {", "transform: translate(", this.location.x + "px", this.location.y + "px", ");}");
+                        AddKeyframes.push("to", "{ transform: translate (", to.split("x")[0] + "px", to.split("x")[1] + "px", "); } }");
+                        console.log(AddKeyframes);
+                        const node = AddKeyframes[0].toString();
+                        console.log(node);
                 }
             }
         }
