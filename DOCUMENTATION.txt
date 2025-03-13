@@ -1,0 +1,32 @@
+Yes.
+Purpose of this Javascript package/module thing is to make animation with as little typing as possible.
+Currently in progress.
+A webpage version of this documentation will be created some time later.
+
+UNLESS OTHERWISE STATED ALL LOCATIONAL/SIZE UNIT ARE IN PIXELS
+Current available functions and relationship:
+  leftover functions:
+    helloWorldBecauseYes(); and AltWay();
+  This two function serves as a proof of concept and is unused in anyway, shape or form.
+  Main functions:
+    Add is class Main which includes:
+      1.initDisplay(resolution, fps, includeSVG); in which:
+      resolution is a string with format <Number>x<Number> where the first number is the width and the second number being the height, all in pixels.
+      fps as a number which determines the delay for looping and duration counting, however this is not implemented yet.
+      includeSVG is a boolean which dictates the usage of SVG. The default is true.
+      WARNING: IF includeSVG IS SET TO FALSE ANY USAGE OF SVG WILL NOT BE SHOWN
+      This function is mandatory as everything else (except DisplayDate) use this as a reference.
+      Id of this display is hard coded as "RenderZone".
+
+      2.DisplayData();
+      Display Data that exist in "RenderZone" under "RenderZone"
+      Further development of this function will also display item list inside "RenderZone" for reference.
+      This function is mandatory as this define the target to add item into for ease of use and development.
+
+      3.CreateRectCSS(width, height, startPos, color, id); in which:
+      width and height is the number of well, width and height of the rectangle that is going to be created.
+      startPos is a string with format of "<Number>x<Number>" which set the initial position of the rectangle.
+      color is a string accepting both color values (#FFFFFF) and color names (red) for the initial color of the rectangle.
+      id is a string which set the id of the rectangle.
+
+      4.CreateRectSVG(width, height, startPos, color, id) which is exactly the same as CreateRectCSS() in practice.
