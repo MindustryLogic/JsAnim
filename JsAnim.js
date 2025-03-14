@@ -19,6 +19,11 @@ export function AltWay() {
 //Sooner or later I will have to write the documentation and tests(probably) and i might put the docs on my github pages and/or use the wiki in github
 export let ObjList = new Array;
 export let stylesheet;
+export const ObjChangeEvent = new CustomEvent("Change", {
+    detail: {
+        Update: "Obj",
+    }
+})
 export class Main{
     constructor(name) {
         this.id = name;
@@ -27,6 +32,7 @@ export class Main{
         this.SVGTarget;
         this.reso;
         this.stylesheet;
+        this.ObjTracker;
     }
     initDisplay(resolution=String("1080x720"), fps=Number(30), includeSVG=Boolean(true)) {
         let ResolutionWidth = Number(resolution.split("x")[0]);
@@ -67,6 +73,28 @@ export class Main{
         para.textContent = frame.style.getPropertyValue("width") + " x " + frame.style.getPropertyValue("height") + " " + this.fps + " fps";
         document.body.appendChild(para);
         console.log(stylesheet);
+        const ol = document.createElement("ol");
+        ol.style.id = "ObjTrackList";
+        ol.appendChild(document.createTextNode(""));
+        document.body.appendChild(ol);
+        this.ObjTracker = document.getElementById("ObjTrackList");
+    }
+    //Dynamic item tracker
+    ObjectTracker() {
+        if (this.ObjTracker.children.length == 0) {
+            for (i = 0; i < ObjList.length; i++) {
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode(ObjList[i].toString));
+                this.ObjTracker.appendChild(li);
+            };
+        } else {
+            this.ObjTracker.innerHTML = "";
+            for (i = 0; i < ObjList.length; i++){
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode(ObjList[i].toString));
+                this.ObjTracker.appendChild(li);
+            }
+        }
     }
     //this portion make stuff exist
     CreateRectCSS(width=Number, height=Number, startPos=String(0x0), color=String(), id=String()) {
@@ -79,7 +107,7 @@ export class Main{
         rect.style.backgroundColor = color;
         rect.setAttribute("id", id);
         rect.style.display = "block";
-        rect.style.opacity = 1;
+        rect.style.opacity = 0;
         this.AppendTarget.insertBefore(rect, this.AppendTarget.children[0]);
         ObjList.push("Rect " + id);
         console.log(ObjList);
@@ -96,35 +124,28 @@ export class Main{
         rect1.setAttribute("opacity", 0);
 
         this.SVGTarget.appendChild(rect1);
-        ObjList.push("Rect " + id + " svg");
+        ObjList.push("Rect " + id + "svg");
         console.log(ObjList);
     };
     //this portion make stuff move
-    AnimateCSS(itemId, mode, type, duration) {
-        this.item = document.getElementById(itemId);
-        if (this.item.id.includes("svg")) {
-            console.error("This element isn't a div please use the function specific for svg");
-            debugger;
-        };
-        
-    };
     static sub = class {
         constructor() {
         };
-        Appear(item) {
-            this.item = ObjList[item];
-            if (this.item.includes("svg") === false) {
-                document.getElementById(this.item.split(" ")[1]).style.opacity = 1;
+        Appear(object) {
+            this.object = ObjList[object];
+            if (this.object.includes("svg") === false) {
+                document.getElementById(this.object.split(" ")[1]).style.opacity = 1;
+                console.log(this.object + "is now opac")
             } else {
-                document.getElementById(this.item.split(" ")[1]).setAttribute("opacity", 1);
+                document.getElementById(this.object.split(" ")[1]).setAttribute("opacity", 1);
             }
         }
-        Animate(item, type, duration, to=String("0x0")) {
-            this.item = ObjList[item];
-            this.location = document.getElementById(this.item.split(" ")[1]).getBoundingClientRect();
+        Animate(object, type, duration, to=String("0x0")) {
+            this.object = ObjList[object];
+            this.location = document.getElementById(this.object.split(" ")[1]).getBoundingClientRect();
             console.log(this.location)
-            if (this.item.includes("svg") === false) {
-                let shape = String(this.item).split(" ")[0];
+            if (this.object.includes("svg") === false) {
+                let shape = String(this.object).split(" ")[0];
                 switch (shape) {
                     case ("Rect"):
                         console.log(stylesheet);
@@ -135,6 +156,10 @@ export class Main{
                         console.log(AddKeyframes);
                         const node = AddKeyframes[0].toString();
                         console.log(node);
+                        for (i = 0; i < AddKeyframes.length; i++) {
+                            document.head.appendChild(document.createTextNode(AddKeyframes[i].toString));
+                        };
+                        
                 }
             }
         }
@@ -143,3 +168,9 @@ export class Main{
 
 export const Add = new Main("RenderZone");
 export const Animate = new Main.sub();
+export const Auto = window.addEventListener("Change", (action) => {
+    switch (action.detail.Update) {
+        case "Obj":
+
+    }
+})
