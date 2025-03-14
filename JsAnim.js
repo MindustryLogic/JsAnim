@@ -62,6 +62,7 @@ export class Main{
         };
         stylesheet = document.createElement("style");
         this.stylesheet = stylesheet;
+        this.stylesheet.setAttribute("id", "STYLE");
         stylesheet.appendChild(document.createTextNode(""));
         document.head.appendChild(stylesheet);
     }
@@ -74,7 +75,7 @@ export class Main{
         document.body.appendChild(para);
         console.log(stylesheet);
         const ol = document.createElement("ol");
-        ol.style.id = "ObjTrackList";
+        ol.setAttribute('id', "ObjTrackList");
         ol.appendChild(document.createTextNode(""));
         document.body.appendChild(ol);
         this.ObjTracker = document.getElementById("ObjTrackList");
@@ -82,18 +83,18 @@ export class Main{
     //Dynamic item tracker
     ObjectTracker() {
         if (this.ObjTracker.children.length == 0) {
-            for (i = 0; i < ObjList.length; i++) {
+            for (let i = 0; i < ObjList.length; i++) {
                 let li = document.createElement("li");
-                li.appendChild(document.createTextNode(ObjList[i].toString));
+                li.appendChild(document.createTextNode(ObjList[i]));
                 this.ObjTracker.appendChild(li);
             };
         } else {
             this.ObjTracker.innerHTML = "";
-            for (i = 0; i < ObjList.length; i++){
+            for (let i = 0; i < ObjList.length; i++){
                 let li = document.createElement("li");
-                li.appendChild(document.createTextNode(ObjList[i].toString));
+                li.appendChild(document.createTextNode(ObjList[i]));
                 this.ObjTracker.appendChild(li);
-            }
+            }//there should be a way to change this list instead of completely nuking it and rebuild it
         }
     }
     //this portion make stuff exist
@@ -111,6 +112,7 @@ export class Main{
         this.AppendTarget.insertBefore(rect, this.AppendTarget.children[0]);
         ObjList.push("Rect " + id);
         console.log(ObjList);
+        window.dispatchEvent(ObjChangeEvent);
     };
     CreateRectSVG(width=Number, height=Number, startPos=String(0x0), color=String, id=String) {
         var rect1 = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
@@ -126,6 +128,7 @@ export class Main{
         this.SVGTarget.appendChild(rect1);
         ObjList.push("Rect " + id + "svg");
         console.log(ObjList);
+        window.dispatchEvent(ObjChangeEvent);
     };
     //this portion make stuff move
     static sub = class {
@@ -150,16 +153,19 @@ export class Main{
                     case ("Rect"):
                         console.log(stylesheet);
                         let AddKeyframes = new Array;
-                        AddKeyframes.push("@keyframes", this.item + "Anim");
-                        AddKeyframes.push("{", "from {", "transform: translate(", this.location.x + "px", this.location.y + "px", ");}");
-                        AddKeyframes.push("to", "{ transform: translate (", to.split("x")[0] + "px", to.split("x")[1] + "px", "); } }");
+                        let ApplyKeyframes = new Array;
+                        AddKeyframes.push("@keyframes " + this.object.replaceAll(" ", "") + "Anim {");
+                        AddKeyframes.push("from {" + "transform: translate(" + this.location.x + "px" + "," + this.location.y + "px" + ");}");
+                        AddKeyframes.push("to" + "{ transform: translate (" + to.split("x")[0] + "px" + "," + to.split("x")[1] + "px" + "); } }");
                         console.log(AddKeyframes);
                         const node = AddKeyframes[0].toString();
                         console.log(node);
-                        for (i = 0; i < AddKeyframes.length; i++) {
-                            document.head.appendChild(document.createTextNode(AddKeyframes[i].toString));
+                        for (let i = 0; i < AddKeyframes.length; i++) {
+                            document.getElementById("STYLE").appendChild(document.createTextNode(AddKeyframes[i]));
                         };
-                        
+                        ApplyKeyframes.push("#" + this.object.split(" ")[1] + "{" + "animation: " + duration + "s " + type + " " + "0s " + node.split(" ")[1] +"}");
+                        console.log(ApplyKeyframes);
+                        document.getElementById("STYLE").appendChild(document.createTextNode(ApplyKeyframes));
                 }
             }
         }
@@ -171,6 +177,6 @@ export const Animate = new Main.sub();
 export const Auto = window.addEventListener("Change", (action) => {
     switch (action.detail.Update) {
         case "Obj":
-
+            setTimeout(Add.ObjectTracker(), 100);
     }
 })
